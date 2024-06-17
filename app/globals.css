@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.theme-color {
+    @apply bg-blue-500 text-white
+}
+
+.hero {
+    @apply container mx-auto text-center py-5
+}
+
+.hero-title {
+    @apply text-4xl font-bold mb-8 text-white
+}
+
+.search-field {
+    @apply flex flex-col items-start md:col-span-3 col-span-2
+}
+
+.search-input {
+    @apply border min-w-full border-gray-300 max-w-full rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500
+}
