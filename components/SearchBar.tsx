@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface Errors {
   pickupLocation?: string;
@@ -24,6 +24,19 @@ const SearchBar = () => {
   const [errors, setErrors] = useState<Errors>({});
   const router = useRouter();
 
+  useEffect(() => {
+    const storedData = localStorage.getItem('rentalData');
+    if (storedData) {
+      const data = JSON.parse(storedData);
+      setPickupLocation(data.pickupLocation);
+      setDropoffLocation(data.dropoffLocation);
+      setPickupDate(data.pickupDate);
+      setPickupTime(data.pickupTime);
+      setDropoffDate(data.dropoffDate);
+      setDropoffTime(data.dropoffTime);
+    }
+  }, []);
+
   const handleDropOffChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSameDropOff(event.target.value === 'same');
     setErrors({});
@@ -37,13 +50,24 @@ const SearchBar = () => {
     if (!dropoffDate) newErrors.dropoffDate = 'Drop-off date is required';
     if (!dropoffTime) newErrors.dropoffTime = 'Drop-off time is required';
     if (!sameDropOff && !dropoffLocation) newErrors.dropoffLocation = 'Drop-off location is required';
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setErrors({});
+      const rentalData = {
+        pickupLocation,
+        dropoffLocation: sameDropOff ? pickupLocation : dropoffLocation,
+        pickupDate,
+        pickupTime,
+        dropoffDate,
+        dropoffTime,
+      };
+      localStorage.setItem('rentalData', JSON.stringify(rentalData));
       router.push('/cars');
     }
+
+    
   };
 
   return (
