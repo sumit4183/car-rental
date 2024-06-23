@@ -59,7 +59,6 @@ const Cars = () => {
 
   return (
     <div>
-      
       <DynamicBar type="CarListing"/>
       <div className="container mx-auto flex px-4 py-6">
         <FilterSidebar />

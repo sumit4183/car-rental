@@ -1,10 +1,50 @@
-import React from 'react';
+"use client"
 
-interface DynamicContentProps {
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+interface DynamicBarProps {
   type: string;
 }
 
-const DynamicContent = ({ type } : DynamicContentProps) => {
+const DynamicBar = ({ type } : DynamicBarProps) => {
+  const currentPath = usePathname();
+  
+  const [activeTab, setActiveTab] = useState('');
+  const router = useRouter();
+
+  const handleButtonClick = (tab: string, route: string) => {
+    setActiveTab(tab);
+    router.push(route);
+  };
+
+  useEffect(() => {
+    if (currentPath === '/cars/options/protection') {
+      setActiveTab('Protection');
+    } else if (currentPath === '/cars/options/equipment') {
+      setActiveTab('Equipment');
+    }
+  }, [currentPath]);
+
+  const renderButtons = () => (
+    <div className="flex space-x-4">
+      <button
+        onClick={() => handleButtonClick('Protection', '/cars/options/protection')}
+        className={`flex items-center py-2 px-4 rounded ${activeTab === 'Protection' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+      >
+        <span className="mr-2">🚨</span>
+        Protection & Coverages
+      </button>
+      <button
+        onClick={() => handleButtonClick('Equipment', '/cars/options/equipment')}
+        className={`flex items-center py-2 px-4 rounded ${activeTab === 'Equipment' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+      >
+        <span className="mr-2">📡</span>
+        Equipment & Services
+      </button>
+    </div>
+  );
+  
   switch (type) {
     case 'CarListing':
       return (
@@ -30,12 +70,12 @@ const DynamicContent = ({ type } : DynamicContentProps) => {
         <div className="bg-white py-4 border-t-2 border-b-2">
           <div className="container mx-auto flex items-center justify-between px-4">
             <div className="flex items-end">
-              <h2 className="text-3xl font-bold">Add Extras</h2>
+              {renderButtons()}
             </div>
             <div className="flex items-center">
-            <button className="bg-green-500 text-white py-2 px-4 rounded">
-            Continue to Review
-          </button>
+              <button className="bg-blue-500 text-white py-2 px-4 rounded">
+                Continue to Review
+              </button>
             </div>
           </div>
         </div>
@@ -45,4 +85,4 @@ const DynamicContent = ({ type } : DynamicContentProps) => {
   }
 };
 
-export default DynamicContent;
+export default DynamicBar;

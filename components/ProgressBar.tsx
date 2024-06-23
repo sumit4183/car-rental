@@ -1,12 +1,10 @@
 "use client";
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 
 const ProgressBar = () => {
   const currentPath = usePathname();
-  const router = useRouter();
 
   const [rentalData, setRentalData] = useState({
     pickupLocation: '',

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Header = () => {
   const isLoggedIn = false;
@@ -12,12 +11,6 @@ const Header = () => {
             EasyDrive
           </span>
         </div>
-        <nav>
-          <Link href="/" className="mr-4"> Home </Link>
-          <Link href="/cars" className="mr-4"> Cars </Link>
-          <Link href="/support" className="mr-4"> Support </Link>
-          <Link href="/manage" className="mr-4"> Manage Rental </Link>
-        </nav>
         <nav>
           {isLoggedIn ? (
             <Link href="/profile" className="mr-4"> Profile </Link>
