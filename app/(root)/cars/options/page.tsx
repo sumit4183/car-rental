@@ -9,10 +9,16 @@ import router from 'next/router'
 import React, { useState } from 'react'
 
 const Options = () => {
+  const pageRouter = useRouter();
+
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   const handleBackClick = () => {
     setActiveTab(null);
+  };
+
+  const handleButtonClick = () => {
+    pageRouter.push('/cars/review'); // Replace '/reviews' with your actual review page route
   };
 
   const renderButtons = () => (
@@ -42,7 +48,7 @@ const Options = () => {
             {renderButtons()}
           </div>
           <div className="flex items-center">
-            <button className="bg-blue-500 text-white py-2 px-4 rounded">
+            <button className="bg-blue-500 text-white py-2 px-4 rounded" onClick={handleButtonClick}>
               Continue to Review
             </button>
           </div>

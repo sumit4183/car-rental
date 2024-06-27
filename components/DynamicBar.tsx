@@ -80,6 +80,16 @@ const DynamicBar = ({ type } : DynamicBarProps) => {
           </div>
         </div>
       );
+    case 'Review':
+      return (
+        <div className="bg-white py-4 border-t-2 border-b-2">
+          <div className="container mx-auto flex items-center justify-between px-4">
+            <div className="flex items-end">
+              <h2 className="text-3xl font-bold">Review & Reserve</h2>
+            </div>
+          </div>
+        </div>
+      )
     default:
       return null;
   }
