@@ -70,58 +70,30 @@ export const packages = [
 
 export const footerLinks = [
   {
-    heading: 'TOP US DESTINATIONS',
+    heading: 'RESERVATIONS',
     links: [
-      { name: 'Travel Guides', path: '/travel-guides' },
-      { name: 'Car Rental Las Vegas', path: '/car-rental-las-vegas' },
-      { name: 'Car Rental Los Angeles', path: '/car-rental-los-angeles' },
-      { name: 'Car Rental Chicago', path: '/car-rental-chicago' },
-      { name: 'Car Rental Orlando', path: '/car-rental-orlando' },
-      { name: 'Car Rental Miami', path: '/car-rental-miami' }
-    ]
-  },
-  {
-    heading: 'RENTAL CAR TYPES',
-    links: [
-      { name: 'One-Way Airport Car Rental', path: '/one-way-airport-car-rental' },
-      { name: 'Electric Car Rental', path: '/electric-car-rental' },
-      { name: 'Luxury Car Rental', path: '/luxury-car-rental' },
-      { name: 'Pickup Truck Rental', path: '/pickup-truck-rental' },
-      { name: 'Van Rental', path: '/van-rental' },
-      { name: 'SUV Rental', path: '/suv-rental' },
-      { name: 'Rental Car Sizes—Sedans', path: '/rental-car-sizes-sedans' }
-    ]
-  },
-  {
-    heading: 'EXTRAS',
-    links: [
-      { name: 'Rental Car Products', path: '/rental-car-products' },
-      { name: 'Car Rental Services', path: '/car-rental-services' },
-      { name: 'Protections & Coverages', path: '/protections-coverages' },
+      { name: 'Protection & Coverages', path: '/protection-coverage' },
       { name: 'Loss Damage Waiver', path: '/loss-damage-waiver' },
       { name: 'Roadside Assistance', path: '/roadside-assistance' }
     ]
   },
   {
-    heading: 'PARTNERS',
+    heading: 'EASYDRIVE EXTRAS',
     links: [
-      { name: 'Affiliates', path: '/affiliates' },
-      { name: 'Travel Agents', path: '/travel-agents' },
-      { name: 'Military & Veterans', path: '/military-veterans' },
-      { name: 'Airline Points Partners', path: '/airline-points-partners' },
-      { name: 'Hotel Points Partners', path: '/hotel-points-partners' }
+      { name: 'Protection & Coverages', path: '/protection-coverage' },
+      { name: 'Loss Damage Waiver', path: '/loss-damage-waiver' },
+      { name: 'Roadside Assistance', path: '/roadside-assistance' }
     ]
   },
   {
-    heading: 'COMPANY INFO',
+    heading: 'RENTAL CAR TYPES',
     links: [
-      { name: 'About', path: '/about' },
-      { name: 'Best Price Pledge', path: '/best-price-pledge' },
-      { name: 'Careers', path: '/careers' },
-      { name: 'Site Map', path: '/site-map' },
-      { name: 'Lost & Found', path: '/lost-found' },
-      { name: 'We Try Harder®', path: '/we-try-harder' },
-      { name: 'Accessibility', path: '/accessibility' }
+      { name: 'Van', path: '/van' },
+      { name: 'SUV', path: '/suv' },
+      { name: 'Sedans', path: '/sedan' },
+      { name: 'Electric Car', path: '/electric-car' },
+      { name: 'Luxury Car', path: '/luxury-car' },
+      { name: 'Pickup Truck', path: '/pickup-truck' }
     ]
   },
   {
@@ -129,7 +101,6 @@ export const footerLinks = [
     links: [
       { name: 'Terms Of Use', path: '/terms-of-use' },
       { name: 'Privacy Notice', path: '/privacy-notice' },
-      { name: 'Your Privacy Choices', path: '/your-privacy-choices' },
       { name: 'Copyright Notices', path: '/copyright-notices' },
       { name: 'Fraud & Scams', path: '/fraud-scams' }
     ]

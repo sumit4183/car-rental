@@ -1,4 +1,4 @@
-import FeaturedCars from "@/components/FeaturedCars";
+// import FeaturedCars from "@/components/FeaturedCars";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
@@ -10,7 +10,7 @@ export default async function RootLayout({
   const loggedIn = true;
 
   return (
-    <main>
+    <main className="bg-gray-100">
       <Header />
       {children}
       <Footer />
