@@ -5,3 +5,13 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE
 );
+
+CREATE TABLE IF NOT EXISTS cars (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL,
+    make TEXT NOT NULL,
+    model TEXT NOT NULL,
+    year INTEGER NOT NULL,
+    rental_price REAL NOT NULL,
+    available INTEGER NOT NULL DEFAULT 1
+);

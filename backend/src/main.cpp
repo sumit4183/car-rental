@@ -2,6 +2,7 @@
 #include <string>
 
 #include "../include/user.h"
+#include "../include/car.h"
 
 // Database functions
 extern bool openDatabase(const char* filename);
@@ -17,7 +18,11 @@ void showMenu()
     cout << "2. Login existing user" << endl;
     cout << "3. Update user" << endl;
     cout << "4. Delete user" << endl;
-    cout << "5. Exit" << endl;
+    cout << "5. Add car" << endl;
+    cout << "6. Edit car" << endl;
+    cout << "7. List cars" << endl;
+    cout << "8. Get Car Details" << endl;
+    cout << "9. Exit" << endl;
     cout << "Choose an option: ";
 }
 
@@ -120,6 +125,69 @@ int main()
             }
         }
         else if (choice == 5)
+        {
+            // Add car
+            Car car;
+            cout << "Enter type: ";
+            getline(cin, car.type);
+            cout << "Enter make: ";
+            getline(cin, car.make);
+            cout << "Enter model: ";
+            getline(cin, car.model);
+            cout << "Enter year: ";
+            cin >> car.year;
+            cout << "Enter rental price: ";
+            cin >> car.rental_price;
+            car.available = true;
+
+            if (addCar(car))
+            {
+                cout << "Car added successfully!" << endl << endl;
+            }
+            else
+            {
+                cout << "Failed to add car." << endl << endl;
+            }
+        }
+        else if (choice == 6)
+        {
+            // Edit car
+            Car car;
+            cout << "Enter car ID to edit: ";
+            cin >> car.id;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
+            cout << "Enter new type: ";
+            getline(cin, car.type);
+            cout << "Enter new make: ";
+            getline(cin, car.make);
+            cout << "Enter new model: ";
+            getline(cin, car.model);
+            cout << "Enter new year: ";
+            cin >> car.year;
+            cout << "Enter new rental price: ";
+            cin >> car.rental_price;
+            cout << "Is the car available (1 for Yes, 0 for No): ";
+            cin >> car.available;
+
+            if (editCar(car))
+            {
+                cout << "Car edited successfully!" << endl << endl;
+            }
+            else
+            {
+                cout << "Failed to edit car." << endl << endl;
+            }
+        }
+        else if (choice == 7)
+        {
+            // List cars
+            listCars();
+        }
+        else if (choice == 8)
+        {
+            // string 
+        }
+        else if (choice == 9)
         {
             break; // Exit the loop and the end program
         }
