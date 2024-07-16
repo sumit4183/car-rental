@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 
+#include "../include/inputs.h"
 #include "../include/user.h"
 #include "../include/car.h"
 
@@ -22,7 +23,10 @@ void showMenu()
     cout << "6. Edit car" << endl;
     cout << "7. List cars" << endl;
     cout << "8. Get Car Details" << endl;
-    cout << "9. Exit" << endl;
+    cout << "9. Book a car" << endl;
+    cout << "10. Cancel booking" << endl;
+    cout << "11. List bookings" << endl;
+    cout << "999. Exit" << endl;
     cout << "Choose an option: ";
 }
 
@@ -187,7 +191,11 @@ int main()
         {
             // string 
         }
-        else if (choice == 9)
+        else if (choice == 9 || choice == 10 || choice == 11)
+        {
+            bookingInput(choice);
+        }
+        else if (choice == 999)
         {
             break; // Exit the loop and the end program
         }

@@ -49,6 +49,19 @@ bool initializeDatabase()
             rental_price REAL NOT NULL,
             available INTEGER NOT NULL DEFAULT 1
         );
+
+        CREATE TABLE IF NOT EXISTS bookings (
+            id INTEGER PRIMARY KEY NOT NULL,
+            user_id INTEGER NOT NULL,
+            car_id INTEGER NOT NULL,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            start_time TEXT NOT NULL,
+            end_time TEXT NOT NULL,
+            total_price REAL NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(id),
+            FOREIGN KEY(car_id) REFERENCES cars(id)
+        );
     )";
 
     char* errMsg = 0;
