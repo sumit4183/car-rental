@@ -6,8 +6,9 @@
 
 using namespace std;
 
-#include "../include/booking.h"
 #include "../include/user.h"
+#include "../include/booking.h"
+#include "../include/car.h"
 
 extern sqlite3* db;
 
@@ -74,21 +75,8 @@ bool getUserDetails(int user_id, User& details)
     }
 }
 
-bool isValidDateTime(const string& date, const string& time) {
-    // Regex pattern for YYYY-MM-DD
-    regex date_pattern(R"(\d{4}-\d{2}-\d{2})");
-    regex time_pattern(R"(\d{2}:\d{2})");
-    if (regex_match(date, date_pattern) && regex_match(time, time_pattern)) {
-        // Further check to validate the actual date values
-        tm tm = {};
-        istringstream ss(date + " " + time);
-        ss >> get_time(&tm, "%Y-%m-%d %H:%M");
-        return !ss.fail();
-    }
-    return false;
-}
-
-bool getBookingDetails(int booking_id, Booking& details) {
+bool getBookingDetails(int booking_id, Booking& details)
+{
     string sql = "SELECT * FROM bookings WHERE id = ?;";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -120,6 +108,25 @@ bool getBookingDetails(int booking_id, Booking& details) {
         cout << "Booking does not exist" << endl;
         return false;
     }
+}
+
+bool getCarDetails(int car_id, Car& details)
+{
+
+}
+
+bool isValidDateTime(const string& date, const string& time) {
+    // Regex pattern for YYYY-MM-DD
+    regex date_pattern(R"(\d{4}-\d{2}-\d{2})");
+    regex time_pattern(R"(\d{2}:\d{2})");
+    if (regex_match(date, date_pattern) && regex_match(time, time_pattern)) {
+        // Further check to validate the actual date values
+        tm tm = {};
+        istringstream ss(date + " " + time);
+        ss >> get_time(&tm, "%Y-%m-%d %H:%M");
+        return !ss.fail();
+    }
+    return false;
 }
 
 bool updateRemainingAmt(int booking_id, double remaining_amount) {

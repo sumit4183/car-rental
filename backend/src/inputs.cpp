@@ -4,6 +4,8 @@
 #include <iomanip>
 
 #include "../include/helper.h"
+#include "../include/user.h"
+#include "../include/car.h"
 #include "../include/booking.h"
 #include "../include/payment.h"
 
@@ -11,12 +13,157 @@ using namespace std;
 
 void userInput(int choice)
 {
+    // Register new user
+    if (choice == 1)
+    {
+        string username, password, name, email;
+        cout << "Enter username: ";
+        getline(cin, username);
+        // CHANGE PASSWORD REQUIREMENTS
+        // HASH PASSWORD
+        // CONFIRM PASSWORD
+        cout << "Enter password: ";
+        getline(cin, password);
+        cout << "Enter name: ";
+        getline(cin, name);
+        // CHANGE EMAIL TO ALL LOWER CASE
+        cout << "Enter email: ";
+        getline(cin, email);
 
+        if (registerUser(username, password, name, email))
+        {
+            cout << "User registered successfully!" << endl;
+        } 
+        else
+        {
+            cout << "User registration failed." << endl;
+        }
+    }
+    // Login existing user
+    else if (choice == 2)
+    {
+        string username, password;
+        cout << "Enter username: ";
+        getline(cin, username);
+        // CHANGE TO HASH
+        cout << "Enter password: ";
+        getline(cin, password);
+
+        if (loginUser(username, password))
+        {
+            cout << "User logged in successfully!" << endl;
+        }
+        else
+        {
+            cout << "User login failed." << endl;
+        }
+    }
+    // Update User Profile
+    else if (choice == 3)
+    {
+        string username, name, password;
+        cout << "Enter username: ";
+        getline(cin, username);
+        cout << "Enter name: ";
+        getline(cin, name);
+        // CHANGE PASSWORD REQUIREMENTS
+        // HASH PASSWORD
+        cout << "Enter password: ";
+        getline(cin, password);
+
+        if (updateUserProfile(username, name, password))
+        {
+            cout << "User updated successfully!" << endl;
+        }
+        else
+        {
+            cout << "User updation failed." << endl;
+        }
+    }
+    // Delete user
+    else if (choice == 4)
+    {
+        string username;
+        // ASK FOR CONFIRMATION
+        cout << "Enter username to delete: ";
+        getline(cin, username);
+
+        if (deleteUser(username))
+        {
+            cout << "User deleted successfully!" << endl;
+        }
+        else
+        {
+            cout << "User deletion failed." << endl;
+        }
+    }
 }
 
 void carInput(int choice)
 {
+    // Add car
+    if (choice == 5)
+    {
+        Car car;
+        cout << "Enter type: ";
+        getline(cin, car.type);
+        cout << "Enter make: ";
+        getline(cin, car.make);
+        cout << "Enter model: ";
+        getline(cin, car.model);
+        cout << "Enter year: ";
+        cin >> car.year;
+        cout << "Enter rental price: ";
+        cin >> car.rental_price;
+        car.available = true;
 
+        if (addCar(car))
+        {
+            cout << "Car added successfully!" << endl << endl;
+        }
+        else
+        {
+            cout << "Failed to add car." << endl << endl;
+        }
+    }
+    // Edit car
+    else if (choice == 6)
+    {
+        Car car;
+        cout << "Enter car ID to edit: ";
+        cin >> car.id;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
+        cout << "Enter new type: ";
+        getline(cin, car.type);
+        cout << "Enter new make: ";
+        getline(cin, car.make);
+        cout << "Enter new model: ";
+        getline(cin, car.model);
+        cout << "Enter new year: ";
+        cin >> car.year;
+        cout << "Enter new rental price: ";
+        cin >> car.rental_price;
+        cout << "Is the car available (1 for Yes, 0 for No): ";
+        cin >> car.available;
+
+        if (editCar(car))
+        {
+            cout << "Car edited successfully!" << endl << endl;
+        }
+        else
+        {
+            cout << "Failed to edit car." << endl << endl;
+        }
+    }
+    // List cars
+    else if (choice == 7)
+    {
+        listCars();
+    }
+    else if (choice == 8)
+    {
+        // string 
+    }
 }
 
 void bookingInput(int choice)
@@ -26,6 +173,7 @@ void bookingInput(int choice)
     {
         // Book a car
         Booking booking;
+        // CHECK IF USER AND CAR EXIST
         cout << "Enter user ID: ";
         cin >> booking.user_id;
         cout << "Enter car ID: ";
@@ -53,7 +201,8 @@ void bookingInput(int choice)
                 cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
             }
         } while (!isValidDateTime(booking.end_date, booking.end_time));
-
+        
+        // BOOKING DATE MUST BE THE SAME OR BEFORE START DATE
         // Input and validate booking date and time
         do {
             cout << "Enter booking date (YYYY-MM-DD): ";
@@ -130,12 +279,14 @@ void bookingInput(int choice)
     }
 }
 
+// ADD BOOKING AND PAYMENT HISTORY FOR SPECFIC USERS
+
 void paymentInput(int choice)
 {
     // Process Payments
     if (choice == 12)
     {
-       // Process payment
+        // Process payment
         Payment payment;
         cout << "Enter user ID: ";
         cin >> payment.user_id;
@@ -167,8 +318,10 @@ void paymentInput(int choice)
             cout << "Failed to process payment." << endl;
         }
     }
+    // List all payments
     else if (choice == 13)
     {
+        // ADJUST ALIGNMENT
         // List payments
         listPayments();
     }

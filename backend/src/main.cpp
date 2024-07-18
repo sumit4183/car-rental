@@ -57,144 +57,14 @@ int main()
         cout << endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
         // Taking user inputs
-        if (choice == 1)
+        if (choice == 1 || choice == 2 || choice == 3 || choice == 4)
         {
-            // Register new user
-            string username, password, name, email;
-            cout << "Enter username: ";
-            getline(cin, username);
-            cout << "Enter password: ";
-            getline(cin, password);
-            cout << "Enter name: ";
-            getline(cin, name);
-            cout << "Enter email: ";
-            getline(cin, email);
-
-            if (registerUser(username, password, name, email))
-            {
-                cout << "User registered successfully!" << endl << endl;
-            } 
-            else
-            {
-                cout << "User registration failed." << endl << endl;
-            }
-        }
-        else if (choice == 2)
-        {
-            // Login existing user
-            string username, password;
-            cout << "Enter username: ";
-            getline(cin, username);
-            cout << "Enter password: ";
-            getline(cin, password);
-
-            if (loginUser(username, password))
-            {
-                cout << "User logged in successfully!" << endl << endl;
-            }
-            else
-            {
-                cout << "User login failed." << endl << endl;
-            }
-        }
-        else if (choice == 3)
-        {
-            string username, name, password;
-            cout << "Enter username: ";
-            getline(cin, username);
-            cout << "Enter name: ";
-            getline(cin, name);
-            cout << "Enter password: ";
-            getline(cin, password);
-
-            if (updateUserProfile(username, name, password))
-            {
-                cout << "User updated successfully!" << endl << endl;
-            }
-            else
-            {
-                cout << "User updation failed." << endl << endl;
-            }
-        }
-        else if (choice == 4)
-        {
-            // Delete user
-            string username;
-            cout << "Enter username to delete: ";
-            getline(cin, username);
-
-            if (deleteUser(username))
-            {
-                cout << "User deleted successfully!" << endl;
-            }
-            else
-            {
-                cout << "User deletion failed." << endl;
-            }
+            userInput(choice);
         }
         // Taking Car Inputs
-        else if (choice == 5)
+        else if (choice == 5 || choice == 6 || choice == 7 || choice == 8)
         {
-            // Add car
-            Car car;
-            cout << "Enter type: ";
-            getline(cin, car.type);
-            cout << "Enter make: ";
-            getline(cin, car.make);
-            cout << "Enter model: ";
-            getline(cin, car.model);
-            cout << "Enter year: ";
-            cin >> car.year;
-            cout << "Enter rental price: ";
-            cin >> car.rental_price;
-            car.available = true;
-
-            if (addCar(car))
-            {
-                cout << "Car added successfully!" << endl << endl;
-            }
-            else
-            {
-                cout << "Failed to add car." << endl << endl;
-            }
-        }
-        else if (choice == 6)
-        {
-            // Edit car
-            Car car;
-            cout << "Enter car ID to edit: ";
-            cin >> car.id;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
-            cout << "Enter new type: ";
-            getline(cin, car.type);
-            cout << "Enter new make: ";
-            getline(cin, car.make);
-            cout << "Enter new model: ";
-            getline(cin, car.model);
-            cout << "Enter new year: ";
-            cin >> car.year;
-            cout << "Enter new rental price: ";
-            cin >> car.rental_price;
-            cout << "Is the car available (1 for Yes, 0 for No): ";
-            cin >> car.available;
-
-            if (editCar(car))
-            {
-                cout << "Car edited successfully!" << endl << endl;
-            }
-            else
-            {
-                cout << "Failed to edit car." << endl << endl;
-            }
-        }
-        else if (choice == 7)
-        {
-            // List cars
-            listCars();
-        }
-        else if (choice == 8)
-        {
-            // string 
+            carInput(choice);
         }
         // Taking Booking Inputs
         else if (choice == 9 || choice == 10 || choice == 11)
@@ -206,6 +76,7 @@ int main()
         {
             paymentInput(choice);
         }
+        // Exit
         else if (choice == 999)
         {
             break; // Exit the loop and the end program
