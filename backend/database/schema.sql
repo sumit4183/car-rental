@@ -24,7 +24,21 @@ CREATE TABLE IF NOT EXISTS bookings (
     end_date TEXT NOT NULL,
     start_time TEXT NOT NULL,
     end_time TEXT NOT NULL,
+    booking_date TEXT NOT NULL,
+    booking_time TEXT NOT NULL,
     total_price REAL NOT NULL,
+    amt_left REAL NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(car_id) REFERENCES cars(id)
 );
+
+CREATE TABLE IF NOT EXISTS payments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    booking_id INTEGER NOT NULL,
+    amount REAL NOT NULL,
+    payment_date TEXT NOT NULL,
+    payment_time TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(booking_id) REFERENCES bookings(id)
+); 

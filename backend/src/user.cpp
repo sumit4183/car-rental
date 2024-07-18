@@ -4,6 +4,7 @@
 #include <regex>
 
 #include "../include/user.h"
+#include "../include/helper.h"
 
 using namespace std;
 
@@ -121,7 +122,6 @@ bool registerUser(const string& username, const string& password, const string& 
     return true;
 }
 
-
 // Function to log in a user
 bool loginUser(const string& username, const string& password)
 {
@@ -154,40 +154,6 @@ bool loginUser(const string& username, const string& password)
         sqlite3_finalize(stmt);
         return false;
     }
-}
-
-bool checkUser(const string& username) {
-    // Check if the username exists
-    cout << "username" << username << endl;
-    string checkSql = "SELECT COUNT(*) FROM users WHERE username = ?;";
-    sqlite3_stmt* checkStmt;
-    int rc2 = sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, nullptr);
-
-    if (rc2 != SQLITE_OK)
-    {
-        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
-        return false;
-    }
-
-    // Bind the username to the SQL statement
-    sqlite3_bind_text(checkStmt, 1, username.c_str(), -1, SQLITE_STATIC);
-
-    rc2 = sqlite3_step(checkStmt);
-    if (rc2 != SQLITE_ROW)
-    {
-        cerr << "Execution failed: " << sqlite3_errmsg(db) << endl;
-        sqlite3_finalize(checkStmt);
-        return false;
-    }
-    int count = sqlite3_column_int(checkStmt, 0);
-    sqlite3_finalize(checkStmt);
-    if (count == 0)
-    {
-        cout << "Username does not exist." << endl;
-        return false;
-    }
-
-    return true;
 }
 
 // Function to update a user's profile

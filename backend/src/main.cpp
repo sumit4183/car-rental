@@ -15,6 +15,7 @@ using namespace std;
 // Function to display the menu options to the user
 void showMenu()
 {
+    cout << endl;
     cout << "1. Register new user" << endl;
     cout << "2. Login existing user" << endl;
     cout << "3. Update user" << endl;
@@ -26,6 +27,8 @@ void showMenu()
     cout << "9. Book a car" << endl;
     cout << "10. Cancel booking" << endl;
     cout << "11. List bookings" << endl;
+    cout << "12. Process payment" << endl;
+    cout << "13. List payments" << endl;
     cout << "999. Exit" << endl;
     cout << "Choose an option: ";
 }
@@ -51,8 +54,9 @@ int main()
     {
         showMenu();
         cin >> choice;  // Get the user's choice
+        cout << endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
-
+        // Taking user inputs
         if (choice == 1)
         {
             // Register new user
@@ -121,13 +125,14 @@ int main()
 
             if (deleteUser(username))
             {
-                cout << "User deleted successfully!" << endl << endl;
+                cout << "User deleted successfully!" << endl;
             }
             else
             {
-                cout << "User deletion failed." << endl << endl;
+                cout << "User deletion failed." << endl;
             }
         }
+        // Taking Car Inputs
         else if (choice == 5)
         {
             // Add car
@@ -191,9 +196,15 @@ int main()
         {
             // string 
         }
+        // Taking Booking Inputs
         else if (choice == 9 || choice == 10 || choice == 11)
         {
             bookingInput(choice);
+        }
+        // Taking Payment Inputs
+        else if (choice == 12 || choice == 13)
+        {
+            paymentInput(choice);
         }
         else if (choice == 999)
         {

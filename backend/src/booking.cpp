@@ -1,7 +1,9 @@
 #include <sqlite3.h>
 #include <iostream>
+#include <iomanip>
 
 #include "../include/booking.h"
+#include "../include/helper.h"
 
 using namespace std;
 
@@ -54,7 +56,7 @@ bool addBooking(const Booking& booking)
     sqlite3_finalize(findIdStmt);
 
     // Insert the new booking with the calculated ID
-    string sql = "INSERT INTO bookings (id, user_id, car_id, start_date, end_date, start_time, end_time, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    string sql = "INSERT INTO bookings (id, user_id, car_id, start_date, end_date, start_time, end_time, booking_date, booking_time, total_price, amt_left) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     sqlite3_stmt* stmt;
     rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
@@ -72,7 +74,10 @@ bool addBooking(const Booking& booking)
     sqlite3_bind_text(stmt, 5, booking.end_date.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 6, booking.start_time.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 7, booking.end_time.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_double(stmt, 8, booking.total_price);
+    sqlite3_bind_text(stmt, 8, booking.booking_date.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 9, booking.booking_time.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_double(stmt, 10, booking.total_price);
+    sqlite3_bind_double(stmt, 11, booking.amt_left);
 
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE)
@@ -120,6 +125,12 @@ bool getCarRentalPrice(int carId, double& rental_price)
 // Function to cancel a booking
 bool cancelBooking(int bookingId)
 {
+    Booking bookingDetails;
+    if(!getBookingDetails(bookingId, bookingDetails))
+    {
+        return false;
+    }
+
     // SQL query to delete a booking
     string sql = "DELETE FROM bookings WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -161,7 +172,20 @@ void listBookings()
 
     // Print header for the booking listings
     cout << "Booking Listings:" << endl;
-    cout << "ID\tUser ID\tCar ID\tStart Date\tStart Time\tEnd Date\tEnd Time\tTotal Price" << endl;
+    const int idWidth = 8, userIdWidth = 9, carIdWidth = 8;
+    const int startDateWidth = 12, startTimeWidth = 12;
+    const int endDateWidth = 12, endTimeWidth = 10;
+    const int bookingDateWidth = 14, bookingTimeWidth = 14;
+    const int priceWidth = 8;
+
+    // Print the header
+    cout << left 
+        << setw(idWidth) << "ID" << setw(userIdWidth) << "User ID" << setw(carIdWidth) << "Car ID"
+        << setw(startDateWidth) << "Start Date" << setw(startTimeWidth) << "Start Time"
+        << setw(endDateWidth) << "End Date" << setw(endTimeWidth) << "End Time"
+        << setw(bookingDateWidth) << "Booking Date" << setw(bookingTimeWidth) << "Booking Time"
+        << setw(priceWidth) << "Price"
+        << endl;
 
     // Loop through the result set and print each booking's details
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
@@ -173,9 +197,18 @@ void listBookings()
         string end_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
         string start_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
         string end_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-        double total_price = sqlite3_column_double(stmt, 7);
+        string booking_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
+        string booking_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
+        double total_price = sqlite3_column_double(stmt, 9);
 
-        cout << id << "\t" << user_id << "\t" << car_id << "\t" << start_date << "\t" << start_time << "\t" << end_date << "\t" << end_time << "\t" << total_price << endl;
+        // cout << id << "\t" << user_id << "\t" << car_id << "\t" << start_date << "\t" << start_time << "\t" << end_date << "\t" << end_time << "\t" << total_price << endl;
+        cout << left 
+            << setw(idWidth) << id << setw(userIdWidth) << user_id << setw(carIdWidth) << car_id
+            << setw(startDateWidth) << start_date << setw(startTimeWidth) << start_time
+            << setw(endDateWidth) << end_date << setw(endTimeWidth) << end_time
+            << setw(bookingDateWidth) << booking_date << setw(bookingTimeWidth) << booking_time
+            << setw(priceWidth) << total_price
+            << endl;
     }
 
     sqlite3_finalize(stmt);

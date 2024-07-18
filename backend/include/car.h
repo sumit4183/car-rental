@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 struct Car {
     int id;
     std::string type;

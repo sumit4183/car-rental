@@ -158,15 +158,15 @@ void listCars()
         int year = sqlite3_column_int(stmt, 4);
         double price = sqlite3_column_double(stmt, 5);
         bool available = sqlite3_column_int(stmt, 6);
-        std::cout << std::left 
-              << std::setw(idWidth) << id
-              << std::setw(typeWidth) << type
-              << std::setw(makeWidth) << make 
-              << std::setw(modelWidth) << model
-              << std::setw(yearWidth) << year 
-              << std::setw(priceWidth) << price 
-              << std::setw(availWidth) << (available ? "Yes" : "No")
-              << std::endl;
+        cout << left 
+            << setw(idWidth) << id
+            << setw(typeWidth) << type
+            << setw(makeWidth) << make 
+            << setw(modelWidth) << model
+            << setw(yearWidth) << year 
+            << setw(priceWidth) << price 
+            << setw(availWidth) << (available ? "Yes" : "No")
+            << endl;
         // cout << id << "\t" << type << std::setw(10) << make << std::setw(8) << model << "\t" << year << "\t" << price << "\t" << (available ? "Yes" : "No") << endl;
     }
 
