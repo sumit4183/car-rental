@@ -9,11 +9,14 @@
 
 using namespace std;
 
+string hashPassword(const string& password);
 bool checkUser(const std::string& username);
 bool getUserDetails(int user_id, User& details);
 bool getBookingDetails(int booking_id, Booking& details);
 bool getCarDetails(int car_id, Car& details);
 bool isValidDateTime(const std::string& date, const std::string& time);
+bool isValidEmail(const string& email);
+bool validatePassword(const string& password);
 bool updateRemainingAmt(int booking_id, double remaining_amount);
 
 #endif // HELPER_H

@@ -8,18 +8,12 @@
 
 using namespace std;
 
-extern sqlite3* db;
-
-// Function to validate email format
-bool isValidEmail(const string& email)
-{
-    const regex pattern(R"((\w+)(\.{1}\w+)*@(\w+)(\.(\w+))+)");
-    return regex_match(email, pattern);
-}
+extern sqlite3* db; 
 
 void printErr(const char* err)
 {
-    const char* errorMessages[][2] = {
+    const char* errorMessages[][2] =
+    {
         { "UNIQUE constraint failed: users.username", "Username already exists. Please choose a different username." },
         { "UNIQUE constraint failed: users.email", "Email already exists. Please choose a different email." }
     };
@@ -37,6 +31,8 @@ void printErr(const char* err)
 // Function to register a new user
 bool registerUser(const string& username, const string& password, const string& name, const string& email)
 {
+    // Hash the password
+    string hashedPassword = hashPassword(password);
     if (!isValidEmail(email))
     {
         cout << "Invalid email format. Please enter a valid email (example@company.com)." << endl;
@@ -100,7 +96,7 @@ bool registerUser(const string& username, const string& password, const string& 
     // Bind values to the SQL statement
     sqlite3_bind_int(stmt, 1, nextId);
     sqlite3_bind_text(stmt, 2, username.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, password.c_str(), -1, SQLITE_STATIC);  // Consider hashing the password
+    sqlite3_bind_text(stmt, 3, hashedPassword.c_str(), -1, SQLITE_STATIC);  // Consider hashing the password
     sqlite3_bind_text(stmt, 4, name.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 5, email.c_str(), -1, SQLITE_STATIC);
 
@@ -142,11 +138,14 @@ bool loginUser(const string& username, const string& password)
     if (rc == SQLITE_ROW)
     {
         // Retrieve the stored password from the database
-        string storedPassword = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        string storedPasswordHash = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
         sqlite3_finalize(stmt);
 
-        // Here, you would compare the hashed passwords in a real application
-        return storedPassword == password;
+        // Hash the input password
+        string hashedInputPassword = hashPassword(password);
+
+        // Compare the hashed input password with the stored password hash
+        return storedPasswordHash == hashedInputPassword;
     }
     else
     {
@@ -159,6 +158,8 @@ bool loginUser(const string& username, const string& password)
 // Function to update a user's profile
 bool updateUserProfile(const string& username, const string& name, const string& password) 
 {
+    // Hash the password
+    string hashedPassword = hashPassword(password);
     if(!checkUser(username))
     {
         return false;
@@ -176,7 +177,7 @@ bool updateUserProfile(const string& username, const string& name, const string&
 
     // Bind new values to the SQL statement
     sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, hashedPassword.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, username.c_str(), -1, SQLITE_STATIC);
 
     rc = sqlite3_step(stmt);

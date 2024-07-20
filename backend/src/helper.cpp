@@ -3,6 +3,7 @@
 #include <regex>
 #include <iomanip>
 #include <sqlite3.h>
+#include <openssl/sha.h>
 
 using namespace std;
 
@@ -12,7 +13,22 @@ using namespace std;
 
 extern sqlite3* db;
 
+// Function to hash password
+string hashPassword(const string& password) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+    SHA256_Update(&sha256, password.c_str(), password.size());
+    SHA256_Final(hash, &sha256);
 
+    stringstream ss;
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
+        ss << hex << setw(2) << setfill('0') << (int)hash[i];
+    }
+    return ss.str();
+}
+ 
+// Function to check if the user exists by username
 bool checkUser(const string& username) {
     // Check if the username exists
     string checkSql = "SELECT COUNT(*) FROM users WHERE username = ?;";
@@ -46,6 +62,7 @@ bool checkUser(const string& username) {
     return true;
 }
 
+// Function to get all detail of the user if exists
 bool getUserDetails(int user_id, User& details)
 {
     string sql = "SELECT * FROM users WHERE id = ?;";
@@ -75,6 +92,7 @@ bool getUserDetails(int user_id, User& details)
     }
 }
 
+// Function to get all detail of the booking if exists
 bool getBookingDetails(int booking_id, Booking& details)
 {
     string sql = "SELECT * FROM bookings WHERE id = ?;";
@@ -110,11 +128,13 @@ bool getBookingDetails(int booking_id, Booking& details)
     }
 }
 
+// Function to get all detail of the car if exists
 bool getCarDetails(int car_id, Car& details)
 {
-
+    return false;
 }
 
+// Function to validate date and time format
 bool isValidDateTime(const string& date, const string& time) {
     // Regex pattern for YYYY-MM-DD
     regex date_pattern(R"(\d{4}-\d{2}-\d{2})");
@@ -129,6 +149,31 @@ bool isValidDateTime(const string& date, const string& time) {
     return false;
 }
 
+// Function to validate email format
+bool isValidEmail(const string& email)
+{
+    const regex pattern(R"((\w+)(\.{1}\w+)*@(\w+)(\.(\w+))+)");
+    return regex_match(email, pattern);
+}
+
+// Function to check password requirements
+bool validatePassword(const string& password) {
+    if (password.length() < 8) {
+        return false;
+    }
+
+    bool hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
+    for (char ch : password) {
+        if (isupper(ch)) hasUpper = true;
+        else if (islower(ch)) hasLower = true;
+        else if (isdigit(ch)) hasDigit = true;
+        else hasSpecial = true;
+    }
+
+    return hasUpper && hasLower && hasDigit && hasSpecial;
+}
+
+// Function to update amount left to pay
 bool updateRemainingAmt(int booking_id, double remaining_amount) {
     string sql = "UPDATE bookings SET amt_left = ? WHERE id = ?;";
     sqlite3_stmt* stmt;

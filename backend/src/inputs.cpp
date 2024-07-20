@@ -16,19 +16,41 @@ void userInput(int choice)
     // Register new user
     if (choice == 1)
     {
-        string username, password, name, email;
+        string username, password, confirmPassword, name, email;
+        // Username input
         cout << "Enter username: ";
         getline(cin, username);
-        // CHANGE PASSWORD REQUIREMENTS
-        // HASH PASSWORD
-        // CONFIRM PASSWORD
+        // Password input
         cout << "Enter password: ";
         getline(cin, password);
+        // Password Requirements
+        if (!validatePassword(password))
+        {
+            cout << "Passwords Requirements:" << endl;
+            cout << "Minimum length (e.g., 8 characters)" << endl;
+            cout << "At least one uppercase letter" << endl;
+            cout << "At least one lowercase letter" << endl;
+            cout << "At least one digit" << endl;
+            cout << "At least one special character" << endl;
+            return;
+        }
+        // Confirm Password input
+        cout << "Confirm password: ";
+        getline(cin, confirmPassword);
+        if (password != confirmPassword)
+        {
+            cout << "Passwords do not match." << endl;
+            cout << "User registration failed." << endl;
+            return;
+        }
+        // User's name input
         cout << "Enter name: ";
         getline(cin, name);
-        // CHANGE EMAIL TO ALL LOWER CASE
+        // User's email input
         cout << "Enter email: ";
         getline(cin, email);
+        // Email to lower case
+        transform(email.begin(), email.end(), email.begin(), ::tolower);
 
         if (registerUser(username, password, name, email))
         {
@@ -43,9 +65,10 @@ void userInput(int choice)
     else if (choice == 2)
     {
         string username, password;
+        // User's name input
         cout << "Enter username: ";
         getline(cin, username);
-        // CHANGE TO HASH
+        // Password input
         cout << "Enter password: ";
         getline(cin, password);
 
@@ -61,15 +84,36 @@ void userInput(int choice)
     // Update User Profile
     else if (choice == 3)
     {
-        string username, name, password;
+        string username, name, password, confirmPassword;
+        // Username input
         cout << "Enter username: ";
         getline(cin, username);
+        // User's name input
         cout << "Enter name: ";
         getline(cin, name);
-        // CHANGE PASSWORD REQUIREMENTS
-        // HASH PASSWORD
+        // Password input
         cout << "Enter password: ";
         getline(cin, password);
+        // Password Requirements
+        if (!validatePassword(password))
+        {
+            cout << "Passwords Requirements:" << endl;
+            cout << "Minimum length (e.g., 8 characters)" << endl;
+            cout << "At least one uppercase letter" << endl;
+            cout << "At least one lowercase letter" << endl;
+            cout << "At least one digit" << endl;
+            cout << "At least one special character" << endl;
+            return;
+        }
+        // Confirm Password
+        cout << "Confirm password: ";
+        getline(cin, confirmPassword);
+        if (password != confirmPassword)
+        {
+            cout << "Passwords do not match." << endl;
+            cout << "User updation failed." << endl;
+            return;
+        }
 
         if (updateUserProfile(username, name, password))
         {
@@ -83,10 +127,19 @@ void userInput(int choice)
     // Delete user
     else if (choice == 4)
     {
-        string username;
-        // ASK FOR CONFIRMATION
+        string username, confirmUsername;
+        // Username input
         cout << "Enter username to delete: ";
         getline(cin, username);
+        // Confirm username
+        cout << "Confirm password: ";
+        getline(cin, confirmUsername);
+        if (username != confirmUsername)
+        {
+            cout << "Usernames do not match." << endl;
+            cout << "User deletion failed." << endl;
+            return;
+        }
 
         if (deleteUser(username))
         {
@@ -99,7 +152,7 @@ void userInput(int choice)
     }
 }
 
-void carInput(int choice)
+void carInput(int choice) 
 {
     // Add car
     if (choice == 5)
