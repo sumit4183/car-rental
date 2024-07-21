@@ -197,3 +197,4 @@ bool updateRemainingAmt(int booking_id, double remaining_amount) {
     sqlite3_finalize(stmt);
     return true;
 }
+

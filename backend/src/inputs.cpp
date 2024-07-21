@@ -155,7 +155,7 @@ void userInput(int choice)
 void carInput(int choice) 
 {
     // Add car
-    if (choice == 5)
+    if (choice == 11)
     {
         Car car;
         cout << "Enter type: ";
@@ -180,7 +180,7 @@ void carInput(int choice)
         }
     }
     // Edit car
-    else if (choice == 6)
+    else if (choice == 12)
     {
         Car car;
         cout << "Enter car ID to edit: ";
@@ -209,20 +209,34 @@ void carInput(int choice)
         }
     }
     // List cars
-    else if (choice == 7)
+    else if (choice == 13)
     {
         listCars();
     }
-    else if (choice == 8)
+    // List Cars by Type
+    else if (choice == 14)
     {
-        // string 
+        string type;
+        cout << "Enter type: ";
+        cin >> type;
+        filterCarsByType(type);
+    }
+    // List Cars by Rental Price Range
+    else if (choice == 15)
+    {
+        double minPrice, maxPrice;
+        cout << "Enter minimum rental price: ";
+        cin >> minPrice;
+        cout << "Enter maximum rental price: ";
+        cin >> maxPrice;
+        filterCarsByRentalPrice(minPrice, maxPrice);
     }
 }
 
 void bookingInput(int choice)
 {
     // Book a Car
-    if (choice == 9)
+    if (choice == 21)
     {
         // Book a car
         Booking booking;
@@ -308,7 +322,7 @@ void bookingInput(int choice)
         }
     }
     // Cancel Booking
-    else if (choice == 10)
+    else if (choice == 22)
     {
         // Cancel booking
         int bookingId;
@@ -325,7 +339,7 @@ void bookingInput(int choice)
         }
     }
     // List all Bookings
-    else if (choice == 11)
+    else if (choice == 23)
     {
         // List bookings
         listBookings();
@@ -337,7 +351,7 @@ void bookingInput(int choice)
 void paymentInput(int choice)
 {
     // Process Payments
-    if (choice == 12)
+    if (choice == 31)
     {
         // Process payment
         Payment payment;
@@ -372,7 +386,7 @@ void paymentInput(int choice)
         }
     }
     // List all payments
-    else if (choice == 13)
+    else if (choice == 32)
     {
         // ADJUST ALIGNMENT
         // List payments

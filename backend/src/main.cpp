@@ -23,12 +23,13 @@ void showMenu()
     cout << "5. Add car" << endl;
     cout << "6. Edit car" << endl;
     cout << "7. List cars" << endl;
-    cout << "8. Get Car Details" << endl;
-    cout << "9. Book a car" << endl;
-    cout << "10. Cancel booking" << endl;
-    cout << "11. List bookings" << endl;
-    cout << "12. Process payment" << endl;
-    cout << "13. List payments" << endl;
+    cout << "8. Filter Cars by Type" << endl;
+    cout << "9. Filter Cars by Rental Price" << endl;
+    cout << "10. Book a car" << endl;
+    cout << "11. Cancel booking" << endl;
+    cout << "12. List bookings" << endl;
+    cout << "13. Process payment" << endl;
+    cout << "14. List payments" << endl;
     cout << "999. Exit" << endl;
     cout << "Choose an option: ";
 }
@@ -56,23 +57,23 @@ int main()
         cin >> choice;  // Get the user's choice
         cout << endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
-        // Taking user inputs
-        if (choice == 1 || choice == 2 || choice == 3 || choice == 4)
+        // Taking User inputs
+        if (choice >= 1 && choice <= 4)
         {
             userInput(choice);
         }
         // Taking Car Inputs
-        else if (choice == 5 || choice == 6 || choice == 7 || choice == 8)
+        else if (choice >= 11 && choice <= 15)
         {
             carInput(choice);
         }
         // Taking Booking Inputs
-        else if (choice == 9 || choice == 10 || choice == 11)
+        else if (choice >= 21 && choice <= 23)
         {
             bookingInput(choice);
         }
         // Taking Payment Inputs
-        else if (choice == 12 || choice == 13)
+        else if (choice >= 31 && choice <= 32)
         {
             paymentInput(choice);
         }
@@ -81,6 +82,7 @@ int main()
         {
             break; // Exit the loop and the end program
         }
+        // Invalid choice
         else
         {
             cout << "Invalid choice. Please try again." << endl << endl;
