@@ -20,16 +20,16 @@ void showMenu()
     cout << "2. Login existing user" << endl;
     cout << "3. Update user" << endl;
     cout << "4. Delete user" << endl;
-    cout << "5. Add car" << endl;
-    cout << "6. Edit car" << endl;
-    cout << "7. List cars" << endl;
-    cout << "8. Filter Cars by Type" << endl;
-    cout << "9. Filter Cars by Rental Price" << endl;
-    cout << "10. Book a car" << endl;
-    cout << "11. Cancel booking" << endl;
-    cout << "12. List bookings" << endl;
-    cout << "13. Process payment" << endl;
-    cout << "14. List payments" << endl;
+    cout << "11. Add car" << endl;
+    cout << "12. Edit car" << endl;
+    cout << "13. List cars" << endl;
+    cout << "14. Filter Cars by Type" << endl;
+    cout << "15. Filter Cars by Rental Price" << endl;
+    cout << "21. Book a car" << endl;
+    cout << "22. Cancel booking" << endl;
+    cout << "23. List bookings" << endl;
+    cout << "31. Process payment" << endl;
+    cout << "32. List payments" << endl;
     cout << "999. Exit" << endl;
     cout << "Choose an option: ";
 }

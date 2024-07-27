@@ -1,6 +1,8 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
+#include <ctime>
 
 #include "../include/booking.h"
 #include "../include/helper.h"
@@ -12,6 +14,20 @@ extern sqlite3* db;
 // Function to add a new booking
 bool addBooking(const Booking& booking)
 {
+    // Check if user exist
+    User userDetails;
+    if (!getUserDetails(booking.user_id, userDetails))
+    {
+        return 0;
+    }
+
+    // Check if the booking exist
+    Car carDetails;
+    if(!getCarDetails(booking.car_id, carDetails))
+    {
+        return 0;
+    }
+
     // Find the smallest available ID for the new booking
     string findIdSql = R"(
         SELECT id + 1

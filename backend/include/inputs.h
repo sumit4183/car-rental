@@ -1,5 +1,5 @@
-#ifndef BOOKING_H
-#define BOOKING_H
+#ifndef INPUTS_H
+#define INPUTS_H
 
 using namespace std;
 
@@ -8,4 +8,19 @@ void carInput(int choice);
 void bookingInput(int choice);
 void paymentInput(int choice);
 
-#endif // BOOKING_H
+void registerUserInput();
+void loginUserInput();
+void updateUserInput();
+void deleteUserInput();
+
+void addCarInput();
+void editCarInput();
+void filterCarsByTypeInput();
+void filterCarsByRentalPriceInput();
+
+void bookCarInput();
+void cancelBookInput();
+
+void processPayInput();
+
+#endif // INPUTS_H
