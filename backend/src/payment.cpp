@@ -84,7 +84,8 @@ bool processPayment(const Payment& payment)
 }
 
 // Function to list all payments
-void listPayments() {
+void listPayments()
+{
     string sql = "SELECT * FROM payments;";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -108,4 +109,10 @@ void listPayments() {
     }
 
     sqlite3_finalize(stmt);
+}
+
+// Helper function to print header when listing all payments
+void printPayListHeader()
+{
+
 }

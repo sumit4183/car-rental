@@ -28,6 +28,7 @@ void showMenu()
     cout << "21. Book a car" << endl;
     cout << "22. Cancel booking" << endl;
     cout << "23. List bookings" << endl;
+    cout << "24. List Bookings by User" << endl;
     cout << "31. Process payment" << endl;
     cout << "32. List payments" << endl;
     cout << "999. Exit" << endl;
@@ -68,7 +69,7 @@ int main()
             carInput(choice);
         }
         // Taking Booking Inputs
-        else if (choice >= 21 && choice <= 23)
+        else if (choice >= 21 && choice <= 24)
         {
             bookingInput(choice);
         }

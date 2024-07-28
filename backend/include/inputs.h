@@ -20,6 +20,7 @@ void filterCarsByRentalPriceInput();
 
 void bookCarInput();
 void cancelBookInput();
+void listUserBookInput();
 
 void processPayInput();
 

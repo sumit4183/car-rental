@@ -2,6 +2,7 @@
 #define BOOKING_H
 
 #include <string>
+#include <sqlite3.h>
 
 using namespace std;
 
@@ -23,5 +24,9 @@ bool addBooking(const Booking& booking);
 bool getCarRentalPrice(int carId, double& rental_price);
 bool cancelBooking(int bookingId);
 void listBookings();
+bool listUserBookings(int userId);
+void printBookListHeader();
+void printBookDetails(sqlite3_stmt* stmt);
+
 
 #endif // BOOKING_H

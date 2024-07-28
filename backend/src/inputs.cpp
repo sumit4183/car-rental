@@ -22,6 +22,7 @@ void userInput(int choice)
     }
 }
 
+// UPDATE CAR AVAILABILITY WHEN BOOKING
 void carInput(int choice) 
 {
     switch (choice) {
@@ -39,8 +40,13 @@ void bookingInput(int choice)
         case 21: bookCarInput(); break;
         case 22: cancelBookInput(); break;
         case 23: listBookings(); break;
+        case 24: listUserBookInput(); break;
     }
 }
+
+// ADD PAYMENT HISTORY FOR SPECFIC USERS
+
+// UPDATE PAYMENT LIST WHEN CANCELLING BOOKINGS
 
 void paymentInput(int choice)
 {
@@ -363,7 +369,14 @@ void cancelBookInput()
     }
 }
 
-// ADD BOOKING AND PAYMENT HISTORY FOR SPECFIC USERS
+void listUserBookInput()
+{
+    int userId;
+    cout << "Enter user ID to view booking history: ";
+    cin >> userId;
+
+    listUserBookings(userId);
+}
 
 // Payment Inputs
 void processPayInput()

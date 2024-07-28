@@ -20,9 +20,9 @@ bool addCar(const Car& car);
 bool editCar(const Car& car);
 bool getCar(int carId, Car& car);
 void listCars();
-void printCarListHeader();
-void printCarDetails(sqlite3_stmt* stmt);
 void filterCarsByType(const string& type);
 void filterCarsByRentalPrice(double minPrice, double maxPrice);
+void printCarListHeader();
+void printCarDetails(sqlite3_stmt* stmt);
 
 #endif // CAR_H

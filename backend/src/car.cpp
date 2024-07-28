@@ -135,7 +135,6 @@ void listCars()
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
     {
         printCarDetails(stmt);
-        // cout << id << "\t" << type << std::setw(10) << make << std::setw(8) << model << "\t" << year << "\t" << price << "\t" << (available ? "Yes" : "No") << endl;
     }
 
     sqlite3_finalize(stmt);
@@ -207,15 +206,15 @@ void printCarListHeader()
     const int availWidth = 10;
 
     // Print the header
-    std::cout << std::left 
-    << std::setw(idWidth) << "ID" 
-    << std::setw(typeWidth) << "Type" 
-    << std::setw(makeWidth) << "Make" 
-    << std::setw(modelWidth) << "Model" 
-    << std::setw(yearWidth) << "Year" 
-    << std::setw(priceWidth) << "Price" 
-    << std::setw(availWidth) << "Available" 
-    << std::endl;
+    cout << left 
+        << setw(idWidth) << "ID" 
+        << setw(typeWidth) << "Type" 
+        << setw(makeWidth) << "Make" 
+        << setw(modelWidth) << "Model" 
+        << setw(yearWidth) << "Year" 
+        << setw(priceWidth) << "Price" 
+        << setw(availWidth) << "Available" 
+        << endl;
 }
 
 // Helper function to list car details
@@ -238,6 +237,7 @@ void printCarDetails(sqlite3_stmt* stmt)
     int year = sqlite3_column_int(stmt, 4);
     double price = sqlite3_column_double(stmt, 5);
     bool available = sqlite3_column_int(stmt, 6);
+
     cout << left 
         << setw(idWidth) << id
         << setw(typeWidth) << type

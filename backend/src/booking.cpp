@@ -188,44 +188,115 @@ void listBookings()
 
     // Print header for the booking listings
     cout << "Booking Listings:" << endl;
-    const int idWidth = 8, userIdWidth = 9, carIdWidth = 8;
-    const int startDateWidth = 12, startTimeWidth = 12;
-    const int endDateWidth = 12, endTimeWidth = 10;
-    const int bookingDateWidth = 14, bookingTimeWidth = 14;
-    const int priceWidth = 8;
-
-    // Print the header
-    cout << left 
-        << setw(idWidth) << "ID" << setw(userIdWidth) << "User ID" << setw(carIdWidth) << "Car ID"
-        << setw(startDateWidth) << "Start Date" << setw(startTimeWidth) << "Start Time"
-        << setw(endDateWidth) << "End Date" << setw(endTimeWidth) << "End Time"
-        << setw(bookingDateWidth) << "Booking Date" << setw(bookingTimeWidth) << "Booking Time"
-        << setw(priceWidth) << "Price"
-        << endl;
+    printBookListHeader();
 
     // Loop through the result set and print each booking's details
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
     {
-        int id = sqlite3_column_int(stmt, 0);
-        int user_id = sqlite3_column_int(stmt, 1);
-        int car_id = sqlite3_column_int(stmt, 2);
-        string start_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        string end_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-        string start_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-        string end_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-        string booking_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
-        string booking_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
-        double total_price = sqlite3_column_double(stmt, 9);
-
-        // cout << id << "\t" << user_id << "\t" << car_id << "\t" << start_date << "\t" << start_time << "\t" << end_date << "\t" << end_time << "\t" << total_price << endl;
-        cout << left 
-            << setw(idWidth) << id << setw(userIdWidth) << user_id << setw(carIdWidth) << car_id
-            << setw(startDateWidth) << start_date << setw(startTimeWidth) << start_time
-            << setw(endDateWidth) << end_date << setw(endTimeWidth) << end_time
-            << setw(bookingDateWidth) << booking_date << setw(bookingTimeWidth) << booking_time
-            << setw(priceWidth) << total_price
-            << endl;
+        printBookDetails(stmt);
     }
 
     sqlite3_finalize(stmt);
+}
+
+// Function to list bookings by User
+bool listUserBookings(int userId)
+{
+    // Check if user exist
+    User userDetails;
+    if (!getUserDetails(userId, userDetails))
+    {
+        return 0;
+    }
+
+    string sql = "SELECT * FROM bookings WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    if (rc != SQLITE_OK)
+    {
+        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
+        return 0;
+    }
+
+    sqlite3_bind_int(stmt, 1, userId);
+
+    cout << "Booking history for user ID " << userId << ":" << endl;
+    printBookListHeader();
+
+    // Loop through the result set and print each booking's details
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        printBookDetails(stmt);
+    }
+
+    sqlite3_finalize(stmt);
+
+    return 1;
+}
+
+// Helper function to print header when listing all bookings
+void printBookListHeader()
+{
+    // Define the width for each column
+    const int idWidth = 8;
+    const int userIdWidth = 9;
+    const int carIdWidth = 8;
+    const int dateWidth = 14;
+    const int timeWidth = 14;
+    const int priceWidth = 14;
+
+    // Print the header
+    cout << left
+         << setw(idWidth) << "ID"
+         << setw(userIdWidth) << "User ID"
+         << setw(carIdWidth) << "Car ID"
+         << setw(dateWidth) << "Start Date"
+         << setw(timeWidth) << "Start Time"
+         << setw(dateWidth) << "End Date"
+         << setw(timeWidth) << "End Time"
+         << setw(dateWidth) << "Booking Date"
+         << setw(timeWidth) << "Booking Time"
+         << setw(priceWidth) << "Total Price"
+         << setw(priceWidth) << "Amount Left"
+         << endl;
+}
+
+// Helper function to list all bookings
+void printBookDetails(sqlite3_stmt* stmt)
+{
+    // Define the width for each column
+    const int idWidth = 8;
+    const int userIdWidth = 9;
+    const int carIdWidth = 8;
+    const int dateWidth = 14;
+    const int timeWidth = 14;
+    const int priceWidth = 14;
+
+    // Print Book Details
+    int booking_id = sqlite3_column_int(stmt, 0);
+    int user_id = sqlite3_column_int(stmt, 1);
+    int car_id = sqlite3_column_int(stmt, 2);
+    string start_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+    string start_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+    string end_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+    string end_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+    string booking_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
+    string booking_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
+    double total_price = sqlite3_column_double(stmt, 9);
+    double amount_left = sqlite3_column_double(stmt, 10);
+
+    cout << left
+        << setw(idWidth) << booking_id
+        << setw(userIdWidth) << user_id
+        << setw(carIdWidth) << car_id
+        << setw(dateWidth) << start_date
+        << setw(timeWidth) << start_time
+        << setw(dateWidth) << end_date
+        << setw(timeWidth) << end_time
+        << setw(dateWidth) << booking_date
+        << setw(timeWidth) << booking_time
+        << setw(priceWidth) << total_price
+        << setw(priceWidth) << amount_left
+        << endl;
 }
