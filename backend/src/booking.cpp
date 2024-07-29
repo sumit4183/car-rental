@@ -6,6 +6,7 @@
 
 #include "../include/booking.h"
 #include "../include/helper.h"
+#include "../include/payment.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ bool addBooking(const Booking& booking)
         return 0;
     }
 
-    // Check if the booking exist
+    // Check if the car exist
     Car carDetails;
     if(!getCarDetails(booking.car_id, carDetails))
     {
@@ -146,6 +147,8 @@ bool cancelBooking(int bookingId)
     {
         return false;
     }
+
+    deleteAllPayments(bookingId);
 
     // SQL query to delete a booking
     string sql = "DELETE FROM bookings WHERE id = ?;";

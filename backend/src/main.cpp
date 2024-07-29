@@ -16,10 +16,10 @@ using namespace std;
 void showMenu()
 {
     cout << endl;
-    cout << "1. Register new user" << endl;
-    cout << "2. Login existing user" << endl;
-    cout << "3. Update user" << endl;
-    cout << "4. Delete user" << endl;
+    cout << "1.  Register new user" << endl;
+    cout << "2.  Login existing user" << endl;
+    cout << "3.  Update user" << endl;
+    cout << "4.  Delete user" << endl;
     cout << "11. Add car" << endl;
     cout << "12. Edit car" << endl;
     cout << "13. List cars" << endl;
@@ -31,6 +31,7 @@ void showMenu()
     cout << "24. List Bookings by User" << endl;
     cout << "31. Process payment" << endl;
     cout << "32. List payments" << endl;
+    cout << "33. List payments by User" << endl;
     cout << "999. Exit" << endl;
     cout << "Choose an option: ";
 }
@@ -74,7 +75,7 @@ int main()
             bookingInput(choice);
         }
         // Taking Payment Inputs
-        else if (choice >= 31 && choice <= 32)
+        else if (choice >= 31 && choice <= 33)
         {
             paymentInput(choice);
         }

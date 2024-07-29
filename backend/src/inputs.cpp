@@ -12,6 +12,7 @@
 
 using namespace std;
 
+// DELETE ALL USER DATA WHEN DELETING USER
 void userInput(int choice)
 {
     switch (choice) {
@@ -44,15 +45,14 @@ void bookingInput(int choice)
     }
 }
 
-// ADD PAYMENT HISTORY FOR SPECFIC USERS
-
-// UPDATE PAYMENT LIST WHEN CANCELLING BOOKINGS
+// NOT RETURNING HALF PAYMENT IF CANCELLING CAR ON PICKUP DATE
 
 void paymentInput(int choice)
 {
     switch (choice) {
         case 31: processPayInput(); break;
-        case 32: listPayments(); break;// ADJUST ALIGNMENT
+        case 32: listPayments(); break;
+        case 33: listUserPayInput(); break;
     }
 }
 
@@ -325,7 +325,7 @@ void bookCarInput()
     // Ensure the end time is after the start time
     if (difftime(end_time, start_time) <= 0) {
         cout << "End date/time must be after start date/time." << endl;
-        return ;
+        return;
     }
 
     // Ensure the rental period is at least one hour
@@ -411,4 +411,13 @@ void processPayInput()
     {
         cout << "Failed to process payment." << endl;
     }
+}
+
+void listUserPayInput()
+{
+    int userId;
+    cout << "Enter user ID to view payment history: ";
+    cin >> userId;
+
+    listUserPayments(userId);
 }

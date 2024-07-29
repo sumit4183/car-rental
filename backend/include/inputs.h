@@ -23,5 +23,6 @@ void cancelBookInput();
 void listUserBookInput();
 
 void processPayInput();
+void listUserPayInput();
 
 #endif // INPUTS_H

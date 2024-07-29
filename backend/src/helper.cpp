@@ -131,7 +131,41 @@ bool getBookingDetails(int booking_id, Booking& details)
 // Function to get all detail of the car if exists
 bool getCarDetails(int car_id, Car& details)
 {
-    return false;
+    // SQL query to select car details
+    string sql = "SELECT * FROM cars WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    if (rc != SQLITE_OK)
+    {
+        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
+        return false;
+    }
+
+    // Bind the car_id to the SQL statement
+    sqlite3_bind_int(stmt, 1, car_id);
+
+    // Execute the query and retrieve the car details
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        details.id = sqlite3_column_int(stmt, 0);
+        details.type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        details.make = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        details.model = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        details.year = sqlite3_column_int(stmt, 4);
+        details.rental_price = sqlite3_column_double(stmt, 5);
+        details.available = sqlite3_column_int(stmt, 6);
+
+        sqlite3_finalize(stmt);
+        return true;
+    }
+    else
+    {
+        cout << "Car not found." << endl;
+        sqlite3_finalize(stmt);
+        return false;
+    }
 }
 
 // Function to validate date and time format

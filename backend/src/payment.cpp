@@ -1,5 +1,6 @@
 #include <sqlite3.h>
 #include <iostream>
+#include <iomanip>
 
 #include "../include/payment.h"
 #include "../include/helper.h"
@@ -40,17 +41,29 @@ bool processPayment(const Payment& payment)
 
     // Check if the payment amount is valid
     double half_price = bookingDetails.amt_left / 2.0;
-    if (payment.payment_date == bookingDetails.booking_date) {
-        if (payment.amount < half_price) {
+    if (payment.payment_date == bookingDetails.booking_date)
+    {
+        if (payment.amount < half_price)
+        {
             cout << "At least half of the total rental price must be paid on the booking date." << endl;
             return 0;
-        } else if (payment.amount < bookingDetails.total_price) {
+        }
+        else if (payment.amount < bookingDetails.total_price && bookingDetails.total_price == bookingDetails.amt_left)
+        {
             double remaining_amount = bookingDetails.total_price - payment.amount;
             cout << "Remaining amount to be paid on the pickup date: $" << remaining_amount << endl;
             updateRemainingAmt(payment.booking_id, remaining_amount);
         }
-    } else if (payment.payment_date == bookingDetails.start_date) {
-        if (payment.amount != bookingDetails.amt_left) {
+        else 
+        {
+            cout << "Half payment already done. Next payment must be during pickup." << endl;
+            return 0;
+        }
+    }
+    else if (payment.payment_date == bookingDetails.start_date)
+    {
+        if (payment.amount != bookingDetails.amt_left)
+        {
             cout << "Full payment is required for the car pickup" << endl;
             return 0;
         }
@@ -96,23 +109,121 @@ void listPayments()
     }
 
     cout << "Payment Listings:" << endl;
-    cout << "ID\tUser ID\tBooking ID\tAmount\tPayment Date" << endl;
+    printPayListHeader();
 
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
-        int id = sqlite3_column_int(stmt, 0);
-        int user_id = sqlite3_column_int(stmt, 1);
-        int booking_id = sqlite3_column_int(stmt, 2);
-        double amount = sqlite3_column_double(stmt, 3);
-        string payment_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-
-        cout << id << "\t" << user_id << "\t" << booking_id << "\t" << amount << "\t" << payment_date << endl;
+        printPayDetails(stmt);
     }
 
     sqlite3_finalize(stmt);
 }
 
+// Function to list payments by User
+bool listUserPayments(int userId)
+{
+    // Check if user exist
+    User userDetails;
+    if (!getUserDetails(userId, userDetails))
+    {
+        return 0;
+    }
+
+    string sql = "SELECT * FROM payments WHERE user_id = ?;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    if (rc != SQLITE_OK)
+    {
+        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
+        return 0;
+    }
+
+    sqlite3_bind_int(stmt, 1, userId);
+
+    cout << "Payment history for user ID " << userId << ":" << endl;
+    printPayListHeader();
+
+    // Loop through the result set and print each booking's details
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        printPayDetails(stmt);
+    }
+
+    sqlite3_finalize(stmt);
+
+    return 1;
+}
+
 // Helper function to print header when listing all payments
 void printPayListHeader()
 {
+    // Define the width for each column
+    const int idWidth = 8;
+    const int userIdWidth = 9;
+    const int bookingIdWidth = 12;
+    const int amount = 14;
+    const int dateWidth = 14;
 
+    // Print the header
+    cout << left
+         << setw(idWidth) << "ID"
+         << setw(userIdWidth) << "User ID"
+         << setw(bookingIdWidth) << "Booking ID"
+         << setw(amount) << "Total Price"
+         << setw(dateWidth) << "Payment Date"
+         << endl;
+}
+
+// Helper function to print all payments
+void printPayDetails(sqlite3_stmt* stmt)
+{
+    // Define the width for each column
+    const int idWidth = 8;
+    const int userIdWidth = 9;
+    const int bookingIdWidth = 12;
+    const int amountWidth = 14;
+    const int dateWidth = 14;
+
+    // Print Pay Details
+    int id = sqlite3_column_int(stmt, 0);
+    int user_id = sqlite3_column_int(stmt, 1);
+    int booking_id = sqlite3_column_int(stmt, 2);
+    double amount = sqlite3_column_double(stmt, 3);
+    string payment_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+
+    // Print the header
+    cout << left
+         << setw(idWidth) << id
+         << setw(userIdWidth) << user_id
+         << setw(bookingIdWidth) << booking_id
+         << setw(amountWidth) << amount
+         << setw(dateWidth) << payment_date
+         << endl;
+}
+
+// Function to delete all payments by Booking ID
+bool deleteAllPayments(int bookingId)
+{
+    string sql = "DELETE FROM payments WHERE booking_id = ?;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    if (rc != SQLITE_OK)
+    {
+        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, bookingId);
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        cerr << "Execution of delete payments failed: " << sqlite3_errmsg(db) << endl;
+        sqlite3_finalize(stmt);
+        return false;
+    }
+
+    sqlite3_finalize(stmt);
+    return true;
 }
