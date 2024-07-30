@@ -20,6 +20,6 @@ void listPayments();
 bool listUserPayments(int userId);
 void printPayListHeader();
 void printPayDetails(sqlite3_stmt* stmt);
-bool deleteAllPayments(int bookingId);
+bool deleteAllPayments(int bookingId, int userId);
 
 #endif // PAYMENT_H

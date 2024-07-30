@@ -28,44 +28,19 @@ string hashPassword(const string& password) {
     return ss.str();
 }
  
-// Function to check if the user exists by username
-bool checkUser(const string& username) {
-    // Check if the username exists
-    string checkSql = "SELECT COUNT(*) FROM users WHERE username = ?;";
-    sqlite3_stmt* checkStmt;
-    int rc2 = sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, nullptr);
-
-    if (rc2 != SQLITE_OK)
-    {
-        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
-        return false;
-    }
-
-    // Bind the username to the SQL statement
-    sqlite3_bind_text(checkStmt, 1, username.c_str(), -1, SQLITE_STATIC);
-
-    rc2 = sqlite3_step(checkStmt);
-    if (rc2 != SQLITE_ROW)
-    {
-        cerr << "Execution failed: " << sqlite3_errmsg(db) << endl;
-        sqlite3_finalize(checkStmt);
-        return false;
-    }
-    int count = sqlite3_column_int(checkStmt, 0);
-    sqlite3_finalize(checkStmt);
-    if (count == 0)
-    {
-        cout << "Username " << username << " does not exist." << endl;
-        return false;
-    }
-
-    return true;
-}
-
 // Function to get all detail of the user if exists
-bool getUserDetails(int user_id, User& details)
+bool getUserDetails(int user_id, const string& username, User& details)
 {
-    string sql = "SELECT * FROM users WHERE id = ?;";
+    string sql = "";
+    if (user_id == 0)
+    {
+        sql = "SELECT * FROM users WHERE username = ?;";
+    }
+    else
+    {
+        sql = "SELECT * FROM users WHERE id = ?;";
+    }
+
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
@@ -74,7 +49,14 @@ bool getUserDetails(int user_id, User& details)
         return false;
     }
 
-    sqlite3_bind_int(stmt, 1, user_id);
+    if (user_id == 0)
+    {
+        sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, user_id);
+    }
 
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_ROW) {

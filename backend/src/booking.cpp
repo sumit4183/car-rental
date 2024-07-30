@@ -17,7 +17,7 @@ bool addBooking(const Booking& booking)
 {
     // Check if user exist
     User userDetails;
-    if (!getUserDetails(booking.user_id, userDetails))
+    if (!getUserDetails(booking.user_id, "", userDetails))
     {
         return 0;
     }
@@ -148,7 +148,7 @@ bool cancelBooking(int bookingId)
         return false;
     }
 
-    deleteAllPayments(bookingId);
+    deleteAllPayments(bookingId, 0);
 
     // SQL query to delete a booking
     string sql = "DELETE FROM bookings WHERE id = ?;";
@@ -207,7 +207,7 @@ bool listUserBookings(int userId)
 {
     // Check if user exist
     User userDetails;
-    if (!getUserDetails(userId, userDetails))
+    if (!getUserDetails(userId, "", userDetails))
     {
         return 0;
     }
@@ -302,4 +302,31 @@ void printBookDetails(sqlite3_stmt* stmt)
         << setw(priceWidth) << total_price
         << setw(priceWidth) << amount_left
         << endl;
+}
+
+bool deleteAllBookings(int userId)
+{
+    string sql = "DELETE FROM bookings WHERE user_id = ?;";
+    
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    if (rc != SQLITE_OK)
+    {
+        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, userId);
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        cerr << "Execution of delete payments failed: " << sqlite3_errmsg(db) << endl;
+        sqlite3_finalize(stmt);
+        return false;
+    }
+
+    sqlite3_finalize(stmt);
+    return true;
 }

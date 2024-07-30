@@ -10,8 +10,7 @@
 using namespace std;
 
 string hashPassword(const string& password);
-bool checkUser(const std::string& username);
-bool getUserDetails(int user_id, User& details);
+bool getUserDetails(int user_id, const std::string& username, User& details);
 bool getBookingDetails(int booking_id, Booking& details);
 bool getCarDetails(int car_id, Car& details);
 bool isValidDateTime(const std::string& date, const std::string& time);

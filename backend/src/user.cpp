@@ -5,6 +5,7 @@
 
 #include "../include/user.h"
 #include "../include/helper.h"
+#include "../include/payment.h"
 
 using namespace std;
 
@@ -160,7 +161,8 @@ bool updateUserProfile(const string& username, const string& name, const string&
 {
     // Hash the password
     string hashedPassword = hashPassword(password);
-    if(!checkUser(username))
+    User userDetails;
+    if(!getUserDetails(0, username, userDetails))
     {
         return false;
     }
@@ -195,10 +197,14 @@ bool updateUserProfile(const string& username, const string& name, const string&
 // Function to delete a user
 bool deleteUser(const string& username)
 {
-    if(!checkUser(username))
+    User userDetails;
+    if(!getUserDetails(0, username, userDetails))
     {
         return false;
     }
+
+    deleteAllPayments(0, userDetails.id);
+    deleteAllBookings(userDetails.id);
 
     string sql = "DELETE FROM users WHERE username = ?;";
     sqlite3_stmt* stmt;

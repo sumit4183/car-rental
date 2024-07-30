@@ -14,7 +14,7 @@ bool processPayment(const Payment& payment)
 {
     // Check if user exist
     User userDetails;
-    if (!getUserDetails(payment.user_id, userDetails))
+    if (!getUserDetails(payment.user_id, "", userDetails))
     {
         return 0;
     }
@@ -67,6 +67,7 @@ bool processPayment(const Payment& payment)
             cout << "Full payment is required for the car pickup" << endl;
             return 0;
         }
+        bookingDetails.amt_left = 0;
     }
 
     string sql = "INSERT INTO payments (user_id, booking_id, amount, payment_date, payment_time) VALUES (?, ?, ?, ?, ?);";
@@ -123,7 +124,7 @@ bool listUserPayments(int userId)
 {
     // Check if user exist
     User userDetails;
-    if (!getUserDetails(userId, userDetails))
+    if (!getUserDetails(userId, "", userDetails))
     {
         return 0;
     }
@@ -202,9 +203,18 @@ void printPayDetails(sqlite3_stmt* stmt)
 }
 
 // Function to delete all payments by Booking ID
-bool deleteAllPayments(int bookingId)
+bool deleteAllPayments(int bookingId, int userId)
 {
-    string sql = "DELETE FROM payments WHERE booking_id = ?;";
+    string sql = "";
+    if (bookingId == 0)
+    {
+        sql = "DELETE FROM payments WHERE user_id = ?;";
+    }
+    else
+    {
+        sql = "DELETE FROM payments WHERE booking_id = ?;";
+    }
+
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
@@ -214,8 +224,15 @@ bool deleteAllPayments(int bookingId)
         return false;
     }
 
-    sqlite3_bind_int(stmt, 1, bookingId);
-
+    if (bookingId == 0)
+    {
+        sqlite3_bind_int(stmt, 1, userId);
+    }
+    else
+    {
+        sqlite3_bind_int(stmt, 1, bookingId);
+    }
+    
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE)
     {

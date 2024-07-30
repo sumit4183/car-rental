@@ -12,7 +12,6 @@
 
 using namespace std;
 
-// DELETE ALL USER DATA WHEN DELETING USER
 void userInput(int choice)
 {
     switch (choice) {

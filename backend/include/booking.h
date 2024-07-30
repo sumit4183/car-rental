@@ -27,6 +27,6 @@ void listBookings();
 bool listUserBookings(int userId);
 void printBookListHeader();
 void printBookDetails(sqlite3_stmt* stmt);
-
+bool deleteAllBookings(int userId);
 
 #endif // BOOKING_H
