@@ -244,3 +244,4 @@ bool deleteAllPayments(int bookingId, int userId)
     sqlite3_finalize(stmt);
     return true;
 }
+

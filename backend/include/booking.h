@@ -22,7 +22,7 @@ struct Booking {
 
 bool addBooking(const Booking& booking);
 bool getCarRentalPrice(int carId, double& rental_price);
-bool cancelBooking(int bookingId);
+bool cancelBooking(int bookingId, string currentDate);
 void listBookings();
 bool listUserBookings(int userId);
 void printBookListHeader();

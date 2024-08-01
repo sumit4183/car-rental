@@ -355,10 +355,25 @@ void bookCarInput()
 void cancelBookInput()
 {
     int bookingId;
+    string currentDate;
+    string currentTime;
+
     cout << "Enter booking ID to cancel: ";
     cin >> bookingId;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
 
-    if (cancelBooking(bookingId))
+    // Input and validate start date and time
+    do {
+        cout << "Enter start date (YYYY-MM-DD): ";
+        getline(cin, currentDate);
+        cout << "Enter start time (HH:MM): ";
+        getline(cin, currentTime);
+        if (!isValidDateTime(currentDate, currentTime)) {
+            cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
+        }
+    } while (!isValidDateTime(currentDate, currentTime));
+
+    if (cancelBooking(bookingId, currentDate))
     {
         cout << "Booking cancelled successfully!" << endl;
     }

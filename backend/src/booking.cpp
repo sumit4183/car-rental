@@ -140,7 +140,7 @@ bool getCarRentalPrice(int carId, double& rental_price)
 }
 
 // Function to cancel a booking
-bool cancelBooking(int bookingId)
+bool cancelBooking(int bookingId, string currentDate)
 {
     Booking bookingDetails;
     if(!getBookingDetails(bookingId, bookingDetails))
@@ -148,7 +148,12 @@ bool cancelBooking(int bookingId)
         return false;
     }
 
-    deleteAllPayments(bookingId, 0);
+    // Compare current date with booking start date
+    if (strcmp(currentDate.c_str(), bookingDetails.start_date.c_str()) != 0)
+    {
+        // Delete all payments if current date is not the start date
+        deleteAllPayments(bookingId, 0);
+    }
 
     // SQL query to delete a booking
     string sql = "DELETE FROM bookings WHERE id = ?;";
