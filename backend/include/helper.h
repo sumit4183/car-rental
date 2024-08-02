@@ -17,5 +17,7 @@ bool isValidDateTime(const std::string& date, const std::string& time);
 bool isValidEmail(const string& email);
 bool validatePassword(const string& password);
 bool updateRemainingAmt(int booking_id, double remaining_amount);
+bool isCarAvailable(int car_id, const string& start_date, const string& end_date);
+
 
 #endif // HELPER_H

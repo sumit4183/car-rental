@@ -214,3 +214,34 @@ bool updateRemainingAmt(int booking_id, double remaining_amount) {
     return true;
 }
 
+
+bool isCarAvailable(int car_id, const string& start_date, const string& end_date)
+{
+    // Check for any overlapping bookings
+    string sql = "SELECT COUNT(*) FROM bookings WHERE car_id = ? AND (start_date <= ? AND end_date >= ?);";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    if (rc != SQLITE_OK)
+    {
+        cerr << "Cannot prepare statement: " << sqlite3_errmsg(db) << endl;
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, car_id);
+    sqlite3_bind_text(stmt, 2, end_date.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, start_date.c_str(), -1, SQLITE_STATIC);
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        int count = sqlite3_column_int(stmt, 0);
+        sqlite3_finalize(stmt);
+        return count == 0;
+    }
+    else
+    {
+        sqlite3_finalize(stmt);
+        return false;
+    }
+}

@@ -309,6 +309,7 @@ void printBookDetails(sqlite3_stmt* stmt)
         << endl;
 }
 
+// Function to delete all the bookings of the user
 bool deleteAllBookings(int userId)
 {
     string sql = "DELETE FROM bookings WHERE user_id = ?;";

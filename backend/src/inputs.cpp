@@ -44,8 +44,6 @@ void bookingInput(int choice)
     }
 }
 
-// NOT RETURNING HALF PAYMENT IF CANCELLING CAR ON PICKUP DATE
-
 void paymentInput(int choice)
 {
     switch (choice) {
@@ -311,6 +309,13 @@ void bookCarInput()
         }
     } while (!isValidDateTime(booking.booking_date, booking.booking_time));
 
+    // Check if the car is available
+    if (!isCarAvailable(booking.car_id, booking.start_date, booking.end_date))
+    {
+        cout << "The car is not available for the selected dates." << endl;
+        return;
+    }
+
     // Calculate the number of rental days
     tm start_tm = {};
     tm end_tm = {};
@@ -364,9 +369,9 @@ void cancelBookInput()
 
     // Input and validate start date and time
     do {
-        cout << "Enter start date (YYYY-MM-DD): ";
+        cout << "Enter current date (YYYY-MM-DD): ";
         getline(cin, currentDate);
-        cout << "Enter start time (HH:MM): ";
+        cout << "Enter current time (HH:MM): ";
         getline(cin, currentTime);
         if (!isValidDateTime(currentDate, currentTime)) {
             cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
