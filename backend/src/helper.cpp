@@ -7,6 +7,7 @@
 
 using namespace std;
 
+#include "../include/helper.h"
 #include "../include/user.h"
 #include "../include/booking.h"
 #include "../include/car.h"
@@ -150,6 +151,22 @@ bool getCarDetails(int car_id, Car& details)
     }
 }
 
+// Function to handle the input and validation of date and time:
+bool getInputAndValidateDateTime(string& date, string& time, const string& promptDate, const string& promptTime)
+{
+    do {
+        cout << promptDate;
+        getline(cin, date);
+        cout << promptTime;
+        getline(cin, time);
+        if (!isValidDateTime(date, time)) {
+            cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
+        }
+    } while (!isValidDateTime(date, time));
+    
+    return true;
+}
+
 // Function to validate date and time format
 bool isValidDateTime(const string& date, const string& time) {
     // Regex pattern for YYYY-MM-DD
@@ -163,6 +180,12 @@ bool isValidDateTime(const string& date, const string& time) {
         return !ss.fail();
     }
     return false;
+}
+
+bool isBookingDateValid(const string& booking_date, const string& start_date)
+{
+    // Compare the two dates directly since they are in the format YYYY-MM-DD
+    return booking_date <= start_date;
 }
 
 // Function to validate email format

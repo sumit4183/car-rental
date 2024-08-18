@@ -22,7 +22,6 @@ void userInput(int choice)
     }
 }
 
-// UPDATE CAR AVAILABILITY WHEN BOOKING
 void carInput(int choice) 
 {
     switch (choice) {
@@ -276,38 +275,26 @@ void bookCarInput()
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
 
     // Input and validate start date and time
-    do {
-        cout << "Enter start date (YYYY-MM-DD): ";
-        getline(cin, booking.start_date);
-        cout << "Enter start time (HH:MM): ";
-        getline(cin, booking.start_time);
-        if (!isValidDateTime(booking.start_date, booking.start_time)) {
-            cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
-        }
-    } while (!isValidDateTime(booking.start_date, booking.start_time));
+    getInputAndValidateDateTime(booking.start_date, booking.start_time, 
+                                "Enter start date (YYYY-MM-DD): ", 
+                                "Enter start time (HH:MM): ");
     
     // Input and validate end date and time
-    do {
-        cout << "Enter end date (YYYY-MM-DD): ";
-        getline(cin, booking.end_date);
-        cout << "Enter end time (HH:MM): ";
-        getline(cin, booking.end_time);
-        if (!isValidDateTime(booking.end_date, booking.end_time)) {
-            cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
-        }
-    } while (!isValidDateTime(booking.end_date, booking.end_time));
-    
-    // BOOKING DATE MUST BE THE SAME OR BEFORE START DATE
+    getInputAndValidateDateTime(booking.end_date, booking.end_time, 
+                                "Enter end date (YYYY-MM-DD): ", 
+                                "Enter end time (HH:MM): ");
+
+    // CHECK TIME IF BOOKING AND START DATE IS SAME
     // Input and validate booking date and time
     do {
-        cout << "Enter booking date (YYYY-MM-DD): ";
-        getline(cin, booking.booking_date);
-        cout << "Enter booking time (HH:MM): ";
-        getline(cin, booking.booking_time);
-        if (!isValidDateTime(booking.booking_date, booking.booking_time)) {
-            cout << "Invalid date/time format. Please enter the date in YYYY-MM-DD and time in HH:MM format." << endl;
+        getInputAndValidateDateTime(booking.booking_date, booking.booking_time, 
+                                    "Enter booking date (YYYY-MM-DD): ", 
+                                    "Enter booking time (HH:MM): ");
+
+        if (!isBookingDateValid(booking.booking_date, booking.start_date)) {
+            cout << "Error: Booking date must be the same as or before the start date." << endl;
         }
-    } while (!isValidDateTime(booking.booking_date, booking.booking_time));
+    } while (!isBookingDateValid(booking.booking_date, booking.start_date));
 
     // Check if the car is available
     if (!isCarAvailable(booking.car_id, booking.start_date, booking.end_date))
@@ -366,7 +353,7 @@ void cancelBookInput()
     cout << "Enter booking ID to cancel: ";
     cin >> bookingId;
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
-
+    // Ensure current date is same or after booking date
     // Input and validate start date and time
     do {
         cout << "Enter current date (YYYY-MM-DD): ";
